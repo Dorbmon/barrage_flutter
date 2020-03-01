@@ -1,13 +1,12 @@
 # barrage_flutter
-This is a barrage Engine for flutter.
+一个flutter的弹幕引擎
+目前还在初始版本，属于勉强能用的版本。
+## 如何使用
 
-[中文说明](https://github.com/Dorbmon/barrage_flutter/README_CN.md)
-## How to use
-Use MaterialBarrageWidget to Containe your Widget and the barrage will appear over it.
-
-And you need to figure out a BarrageController for MaterialBarrageWidget where you can add your own barrage.
-
-Here is an example.It builds two barrages that have different speeds.We use vector to figure the speed.
+使用 MaterialBarrageWidget 包裹你的组件，弹幕会在它的上方出现。
+另外你需要为 MaterialBarrageWidget 指定一个 BarrageController,你将使用它进行添加弹幕操作。
+具体例子
+这个代码创建了两个弹幕，并且速度不一样。我们使用二维矢量来指定速度。
 ```
 import 'package:barrage_flutter/barrage_flutter.dart';
 import 'package:flutter/material.dart';
