@@ -1,5 +1,5 @@
+import 'package:barrage_flutter/barrage_flutter.dart';
 import 'package:flutter/material.dart';
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -11,19 +11,52 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TestPage (),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
-class TestPage extends StatefulWidget {
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+  final String title;
+
   @override
-  State<StatefulWidget> createState() {
-    return _TextPageState();
-  }
+  _MyHomePageState createState() => _MyHomePageState();
 }
-class _TextPageState extends State<TestPage> {
+
+class _MyHomePageState extends State<MyHomePage> {
+  final BarrageController controller = BarrageController();
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero,() {
+      debugPrint ("add");
+      controller.push_barrage (barrage (
+        vector2 (0,0),
+        vector2 (10,0),
+        Text ("测试一下")
+      ));
+      controller.push_barrage (barrage (
+        vector2 (1,20),
+        vector2 (15,0),
+        Text ("测试2下",style: TextStyle (
+          color: Colors.red
+        ),)
+      ));
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return 
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body:Center(child:MaterialBarrageWidget(
+            child: Icon (
+              Icons.ac_unit,
+              size: 200,
+            ),
+            controller: controller,
+            )));
   }
 }
