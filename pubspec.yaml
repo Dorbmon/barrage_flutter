@@ -1,5 +1,7 @@
 name: barrage_flutter
 description: 这是一个初级的弹幕引擎，使用它你可以在图层上添加弹幕，任意的Widget均可.
+并且是十分容易使用的库。
+
 version: 0.1.0
 homepage: https://github.com/Dorbmon
 

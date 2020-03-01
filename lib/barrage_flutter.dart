@@ -54,7 +54,7 @@ class _barrageState extends State<barrage>  with SingleTickerProviderStateMixin{
   @override
   void dispose() {
     controller.dispose();
-    super.dispose();1
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
