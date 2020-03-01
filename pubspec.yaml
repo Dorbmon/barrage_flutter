@@ -1,7 +1,7 @@
 name: barrage_flutter
-description: Barrage Widget
+description: 这是一个初级的弹幕引擎，使用它你可以在图层上添加弹幕，任意的Widget均可.
 version: 0.0.1
-homepage: http://github.com/Dorbmon
+homepage: https://github.com/Dorbmon
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
