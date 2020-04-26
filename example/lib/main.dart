@@ -31,14 +31,14 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Future.delayed(Duration.zero,() {
       debugPrint ("add");
-      controller.push_barrage (barrage (
-        vector2 (0,0),
-        vector2 (10,0),
+      controller.pushBarrage (Barrage (
+        Vector2 (0,0),
+        Vector2 (10,0),
         Text ("测试一下")
       ));
-      controller.push_barrage (barrage (
-        vector2 (1,20),
-        vector2 (15,0),
+      controller.pushBarrage (Barrage (
+        Vector2 (1,20),
+        Vector2 (15,0),
         Text ("测试2下",style: TextStyle (
           color: Colors.red
         ),)

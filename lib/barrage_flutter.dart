@@ -2,86 +2,104 @@ library barrage_flutter;
 
 import 'package:flutter/widgets.dart';
 
-class vector2 <T extends num>{
-  T x,y;
-  vector2 (this.x,this.y);
-  vector2<T> operator * (T v) {
-    vector2<T> tmp = vector2(this.x,this.y);
+class Vector2<T extends num> {
+  T x, y;
+  Vector2(this.x, this.y);
+  Vector2<T> operator *(T v) {
+    Vector2<T> tmp = Vector2(this.x, this.y);
     tmp.x *= v;
     tmp.y *= v;
     return tmp;
   }
-  vector2<T> operator + (vector2<T> v) {
-    vector2<T> tmp = vector2(this.x,this.y);
-    tmp.x += v.x;tmp.y += v.y;
+
+  Vector2<T> operator +(Vector2<T> v) {
+    Vector2<T> tmp = Vector2(this.x, this.y);
+    tmp.x += v.x;
+    tmp.y += v.y;
     return tmp;
   }
 }
 
-class barrage extends StatefulWidget{ //弹幕对象
-  vector2<double> pos;  //初始位置
-  vector2<double> speed;
-  vector2<double> npos;
+class Barrage extends StatefulWidget {
+  //弹幕对象
+  final Vector2<double> pos, speed;
   Function remove;
-  barrage (this.pos,this.speed,this.child,{Duration duration}) {
+  final Function onDelete;
+  Barrage(this.pos, this.speed, this.child,
+      {Duration duration,  this.onDelete}) {
     if (duration != null) {
-      Future.delayed(duration,() {
-        remove ();
+      Future.delayed(duration, () {
+        remove();
       });
     }
-    this.npos = pos;
   }
   Widget child;
   @override
   State<StatefulWidget> createState() {
-    return _barrageState ();
+    return _BarrageState();
   }
 }
-const int INF =  1000;
-class _barrageState extends State<barrage>  with SingleTickerProviderStateMixin{
+
+const int INF = 1000;
+
+class _BarrageState extends State<Barrage> with SingleTickerProviderStateMixin {
   AnimationController controller;
-  initState () {
+  Vector2<double> npos;
+  GlobalKey key = GlobalKey();
+  initState() {
     super.initState();
+    npos = widget.pos;
     controller = new AnimationController(
-    duration: const Duration(seconds: INF), vsync: this);
+        duration: const Duration(seconds: INF), vsync: this);
     controller.addListener(() {
       setState(() {
-        widget.npos = widget.speed * (INF * controller.value) + widget.pos;
-      }); 
+        npos = widget.speed * (INF * controller.value) + widget.pos;
+      });
     });
     controller.forward();
   }
+
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Positioned (
+    return Positioned(
       child: widget.child,
-      top: widget.npos.y,
-      left: widget.npos.x,
+      top: npos.y,
+      left: npos.x,
     );
   }
 }
+
 class BarrageController {
-  dynamic push_barrage;
+  dynamic pushBarrage;
+  dynamic removeBarrage;
+  dynamic barrages;
 }
+
 class MaterialBarrageWidget extends StatefulWidget {
   final BarrageController controller;
-  List<barrage> barrages = List ();
-  Widget child;
-  MaterialBarrageWidget ({this.controller,this.child}) ;
+  final List<Barrage> barrages = List();
+  final Widget child;
+  MaterialBarrageWidget({this.controller, this.child}) {
+    controller.barrages = barrages;
+  }
   @override
   State<StatefulWidget> createState() {
     return _MaterialBarrageWidgetState();
   }
 }
-class _MaterialBarrageWidgetState extends State<MaterialBarrageWidget>{
-  initState () {
+
+typedef bool FindBarrageFunction(Barrage barrage);
+
+class _MaterialBarrageWidgetState extends State<MaterialBarrageWidget> {
+  initState() {
     super.initState();
-    widget.controller.push_barrage = (barrage v) {
+    widget.controller.pushBarrage = (Barrage v) {
       v.remove = () {
         setState(() {
           widget.barrages.remove(v);
@@ -91,10 +109,24 @@ class _MaterialBarrageWidgetState extends State<MaterialBarrageWidget>{
         widget.barrages.add(v);
       });
     };
+    widget.controller.removeBarrage = (FindBarrageFunction f) {
+      setState(() {
+        List<Barrage> need = List();
+        for (var i in widget.barrages) {
+          if (f(i)) {
+            need.add(i);
+          }
+        }
+        for (var i in need) {
+          widget.barrages.remove(i);
+        }
+      });
+    };
   }
+
   @override
   Widget build(BuildContext context) {
-    return Stack (
+    return Stack(
       children: <Widget>[
         widget.child,
       ]..addAll(widget.barrages),
