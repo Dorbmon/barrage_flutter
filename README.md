@@ -1,7 +1,7 @@
 # barrage_flutter
 This is a barrage Engine for flutter.
 
-[中文说明](https://github.com/Dorbmon/barrage_flutter/README_CN.md)
+[中文说明](https://github.com/Dorbmon/barrage_flutter/blob/master/README_CN.md)
 ## How to use
 Use MaterialBarrageWidget to Containe your Widget and the barrage will appear over it.
 
